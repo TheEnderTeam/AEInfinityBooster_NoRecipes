@@ -7,16 +7,12 @@ buildscript {
     dependencies {
         classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '6.+', changing: true
         classpath 'org.spongepowered:mixingradle:0.7-SNAPSHOT'
-        classpath "gradle.plugin.com.matthewprenger:CurseGradle:1.4.0"
-        classpath group: 'com.modrinth.minotaur', name: 'Minotaur', version: '2+'
     }
 }
 
 apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'org.spongepowered.mixin'
-apply plugin: "com.matthewprenger.cursegradle"
 apply plugin: 'maven-publish'
-apply plugin: 'com.modrinth.minotaur'
 
 group = 'uk.co.hexeption'
 version = '1.20.1-1.0.0'
@@ -148,4 +144,24 @@ artifacts {
     archives jar
     archives sourcesJar
     archives deobfJar
+}
+publishing {
+  publications {
+        mavenJava(MavenPublication) {
+            artifact jar
+            artifact sourcesJar
+            artifact deobfJar
+        }
+    }
+    
+    repositories {
+    maven {
+      name = "GitHubPackages"
+      url = "https://maven.pkg.github.com/TheEnderTeam/AEInfinityBooster_NoRecipes"
+      credentials {
+        username = System.getenv("GITHUB_ACTOR")
+        password = System.getenv("GITHUB_TOKEN")
+      }
+    }
+  }
 }
